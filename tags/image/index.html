@@ -7,12 +7,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
-<title>分类: 微信小游戏开发 - flycar.life</title>
+<title>标签: image - flycar.life</title>
 
 
     <meta property="og:type" content="website">
 <meta property="og:title" content="flycar.life">
-<meta property="og:url" content="http://flycar.github.io/categories/微信小游戏开发/index.html">
+<meta property="og:url" content="http://flycar.github.io/tags/image/index.html">
 <meta property="og:site_name" content="flycar.life">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://flycar.github.io/images/og_image.png">
@@ -131,9 +131,8 @@
     <div class="card-content">
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-            <li><a href="/categories">分类</a></li>
-            
-            <li class="is-active"><a href="#" aria-current="page">微信小游戏开发</a></li>
+            <li><a href="/tags">标签</a></li>
+            <li class="is-active"><a href="#" aria-current="page">image</a></li>
         </ul>
         </nav>
     </div>
@@ -142,8 +141,8 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/09/23/markdown/" class="image is-7by1">
-            <img class="thumbnail" src="/2019/09/23/markdown/thumb1.png" alt="消灭陨石（射击类）-资源载入">
+        <a href="/2019/09/24/924/" class="image is-7by1">
+            <img class="thumbnail" src="/2019/09/24/924/mark.png" alt="hexo image图片相关问题">
         </a>
     </div>
     
@@ -151,17 +150,13 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-09-22T16:00:00.000Z">2019-09-23</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/微信小游戏开发/">微信小游戏开发</a>
-                </div>
+                <time class="level-item has-text-grey" datetime="2019-09-23T16:00:00.000Z">2019-09-24</time>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    1 分钟 读完 (大约 173 个字)
+                    1 分钟 读完 (大约 128 个字)
                 </span>
                 
                 
@@ -170,23 +165,23 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/09/23/markdown/">消灭陨石（射击类）-资源载入</a>
+                <a class="has-link-black-ter" href="/2019/09/24/924/">hexo image图片相关问题</a>
             
         </h1>
         <div class="content">
-            <img src="/2019/09/23/markdown/1569228949483.png">
+            <h4 id="一、图片大小"><a href="#一、图片大小" class="headerlink" title="一、图片大小"></a>一、图片大小</h4><p>主要在hexo下面的node_modules/hexo-asset-image中</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo/node_modules/hexo-asset-image: vim index.js</span><br></pre></td></tr></table></figure>
 
-<h3 id="本游戏使用laya-fairygui开发"><a href="#本游戏使用laya-fairygui开发" class="headerlink" title="本游戏使用laya+fairygui开发"></a>本游戏使用laya+fairygui开发</h3>
+<p>找到$(‘img’).each(function(){}) 在代码下添加一句如下图所示：（PS.可以根据自己想要的设置宽度，高度与宽度等比例缩放）</p>
+<img src="/2019/09/24/924/mark.png">
+
+<h4 id="二、图片路径问题"><a href="#二、图片路径问题" class="headerlink" title="二、图片路径问题"></a>二、图片路径问题</h4><p>图片上传后会出来/.com/ 或者 /.io等图片路径出错问题</p>
+<p>下载</p>
+<p><a href="./index.zip">index.js</a></p>
+<p>然后覆盖到hexo/node_modules/hexo-asset-image下即可。</p>
+
         </div>
         
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/09/23/markdown/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
         
         
     </div>
