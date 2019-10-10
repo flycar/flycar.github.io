@@ -134,7 +134,7 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-10-10T07:47:37.476Z">2019-10-10</time>
+                <time class="level-item has-text-grey" datetime="2019-10-10T07:53:35.645Z">2019-10-10</time>
                 
                 <div class="level-item">
                 <a class="has-link-grey -link" href="/categories/笔记/">笔记</a>&nbsp;/&nbsp;<a class="has-link-grey -link" href="/categories/笔记/游戏/">游戏</a>
@@ -144,7 +144,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    2 分钟 读完 (大约 297 个字)
+                    2 分钟 读完 (大约 298 个字)
                 </span>
                 
                 
@@ -153,7 +153,7 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/10/10/代码本色/">代码本色-笔记1</a>
+                <a class="has-link-black-ter" href="/2019/10/10/book-note-1/">代码本色-笔记1</a>
             
         </h1>
         <div class="content">
@@ -167,21 +167,16 @@
 <p>​      y2 = sqrt(- 2 ln(u) ) sin( 2 pi v)</p>
 <p>​      算法描述：</p>
 <figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNumberInNormalDistribution</span>(<span class="hljs-params">mean,std_dev</span>)</span>&#123; <span class="hljs-comment">//mean 均值中心，std_dev标准差</span></span><br><span class="line">    <span class="hljs-keyword">return</span> mean+(randomNormalDistribution()*std_dev);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">randomNormalDistribution</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    <span class="hljs-keyword">var</span> u=<span class="hljs-number">0.0</span>, v=<span class="hljs-number">0.0</span>, w=<span class="hljs-number">0.0</span>, c=<span class="hljs-number">0.0</span>;</span><br><span class="line">    <span class="hljs-keyword">do</span>&#123;</span><br><span class="line">        <span class="hljs-comment">//获得两个（-1,1）的独立随机变量</span></span><br><span class="line">        u=<span class="hljs-built_in">Math</span>.random()*<span class="hljs-number">2</span><span class="hljs-number">-1.0</span>;</span><br><span class="line">        v=<span class="hljs-built_in">Math</span>.random()*<span class="hljs-number">2</span><span class="hljs-number">-1.0</span>;</span><br><span class="line">        w=u*u+v*v;</span><br><span class="line">    &#125;<span class="hljs-keyword">while</span>(w==<span class="hljs-number">0.0</span>||w&gt;=<span class="hljs-number">1.0</span>)</span><br><span class="line">    <span class="hljs-comment">//这里就是 Box-Muller转换</span></span><br><span class="line">    c=<span class="hljs-built_in">Math</span>.sqrt((<span class="hljs-number">-2</span>*<span class="hljs-built_in">Math</span>.log(w))/w);</span><br><span class="line">    <span class="hljs-comment">//返回2个标准正态分布的随机数，封装进一个数组返回</span></span><br><span class="line">    <span class="hljs-comment">//当然，因为这个函数运行较快，也可以扔掉一个</span></span><br><span class="line">    <span class="hljs-comment">//return [u*c,v*c];</span></span><br><span class="line">    <span class="hljs-keyword">return</span> u*c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​    2.由均匀分布叠加获得正态分布</p>
-<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNumberInNormalDistribution</span>(<span class="hljs-params">mean,std_dev</span>)</span>&#123;    </span><br><span class="line">    <span class="hljs-keyword">return</span> mean+(uniform2NormalDistribution()*std_dev);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">uniform2NormalDistribution</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    <span class="hljs-keyword">var</span> sum=<span class="hljs-number">0.0</span>;</span><br><span class="line">    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">12</span>; i++)&#123;</span><br><span class="line">        sum=sum+<span class="hljs-built_in">Math</span>.random();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">return</span> sum<span class="hljs-number">-6.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>转自链接：<a href="https://www.cnblogs.com/zztt/p/4025207.html" target="_blank" rel="noopener">https://www.cnblogs.com/zztt/p/4025207.html</a></p>
-<p>三、蒙特卡洛算法</p>
-<figure class="highlight c++ hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">float</span> <span class="hljs-title">montecarlo</span><span class="hljs-params">()</span></span>&#123;</span><br><span class="line">	<span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>)&#123;</span><br><span class="line">		<span class="hljs-keyword">float</span> r1 = random(<span class="hljs-number">1</span>);</span><br><span class="line">		<span class="hljs-keyword">float</span> probability = r1;</span><br><span class="line">		<span class="hljs-keyword">float</span> r2 = random(<span class="hljs-number">2</span>);</span><br><span class="line">		<span class="hljs-keyword">if</span>(r2 &lt; probability)&#123;</span><br><span class="line">			<span class="hljs-keyword">return</span> r1;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>四、Perlin噪声</p>
-<p>参考链接：</p>
-<p><a href="https://www.cnblogs.com/leoin2012/p/7218033.html" target="_blank" rel="noopener">https://www.cnblogs.com/leoin2012/p/7218033.html</a></p>
-<p><a href="https://blog.csdn.net/qq_34302921/article/details/80849139" target="_blank" rel="noopener">https://blog.csdn.net/qq_34302921/article/details/80849139</a></p>
-
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/10/10/book-note-1/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -506,7 +501,7 @@
         
         <article class="media">
             
-            <a href="/2019/10/10/代码本色/" class="media-left">
+            <a href="/2019/10/10/book-note-1/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="代码本色-笔记1">
                 </p>
@@ -514,8 +509,8 @@
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-10T07:47:37.476Z">2019-10-10</time></div>
-                    <a href="/2019/10/10/代码本色/" class="title has-link-black-ter is-size-6 has-text-weight-normal">代码本色-笔记1</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-10T07:53:35.645Z">2019-10-10</time></div>
+                    <a href="/2019/10/10/book-note-1/" class="title has-link-black-ter is-size-6 has-text-weight-normal">代码本色-笔记1</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/笔记/">笔记</a> / <a class="has-link-grey -link" href="/categories/笔记/游戏/">游戏</a>
                     </p>
@@ -668,7 +663,7 @@
         
         <article class="media">
             
-            <a href="/2019/10/10/代码本色/" class="media-left">
+            <a href="/2019/10/10/book-note-1/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="代码本色-笔记1">
                 </p>
@@ -676,8 +671,8 @@
             
             <div class="media-content">
                 <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-10T07:47:37.476Z">2019-10-10</time></div>
-                    <a href="/2019/10/10/代码本色/" class="title has-link-black-ter is-size-6 has-text-weight-normal">代码本色-笔记1</a>
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-10-10T07:53:35.645Z">2019-10-10</time></div>
+                    <a href="/2019/10/10/book-note-1/" class="title has-link-black-ter is-size-6 has-text-weight-normal">代码本色-笔记1</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/笔记/">笔记</a> / <a class="has-link-grey -link" href="/categories/笔记/游戏/">游戏</a>
                     </p>
