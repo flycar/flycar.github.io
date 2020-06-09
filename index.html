@@ -134,6 +134,86 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-06-09T01:43:21.000Z">2020-06-09</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    10 分钟 读完 (大约 1548 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/2020/06/09/work/">work</a>
+            
+        </h1>
+        <div class="content">
+            <h1 id="a-游戏开发"><a href="#a-游戏开发" class="headerlink" title="a.游戏开发"></a>a.游戏开发</h1><h2 id="1-移动方法"><a href="#1-移动方法" class="headerlink" title="1.移动方法"></a>1.移动方法</h2><p>使用浮点数学的帧率相关的ease-out:<br>$$<br>x=(x_0 * (weight - 1) + x_f) / weight<br>$$<br>使用整型数学的帧速相关ease-out:<br>$$<br>x=(x_0*(2^n - 1) + x_f)&gt;&gt;n<br>$$<br>帧速无关线性内插<br>$$<br>v=(x_f-x_0)/t<br>$$</p>
+<p>$$<br>x=x_0+t_f*v<br>$$</p>
+<p>帧速无关的ease-in和ease-out<br>$$<br>x=x_0+v_0t+\frac{1}{2}at^2<br>$$</p>
+<p>$$<br>a=\frac{2(x-x_0)}{t^2}<br>$$</p>
+<p>$$<br>v=v_0+at<br>$$</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">bool set(float from, float to, float time)</span><br><span class="line">&#123;</span><br><span class="line">  _value = time;</span><br><span class="line">  _target = to;</span><br><span class="line">  _speed = 0.0f;</span><br><span class="line">  //derived from x = x0 + v0*t + a*t*t/2</span><br><span class="line">  _acceleration = (to - from) / (time * time / 4);</span><br><span class="line">  _remainingTime = _totalTime = time;</span><br><span class="line">&#125;</span><br><span class="line">bool Move(float deltaTime)&#123;</span><br><span class="line">	_remainingTime -= deltaTime;</span><br><span class="line">	if(_remainingTime &lt; _totalTime / 2)&#123;</span><br><span class="line">		_speed -= _acceleration * deltaTime;</span><br><span class="line">	&#125;</span><br><span class="line">	else&#123;</span><br><span class="line">		_speed += _acceleration * deltaTime;</span><br><span class="line">	&#125;</span><br><span class="line">	_value += _speed * deltaTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-检测一个数是否是2的幂次"><a href="#2-检测一个数是否是2的幂次" class="headerlink" title="2.检测一个数是否是2的幂次"></a>2.检测一个数是否是2的幂次</h2><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bool powOfTwo(int num)&#123;</span><br><span class="line">	return !(num &amp; (num - 1));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-利用矩阵乘法实现2D变换"><a href="#3-利用矩阵乘法实现2D变换" class="headerlink" title="3.利用矩阵乘法实现2D变换"></a>3.利用矩阵乘法实现2D变换</h2><h3 id="3-1-平移"><a href="#3-1-平移" class="headerlink" title="3.1 平移"></a>3.1 平移</h3><p>$$<br>\left[\begin{array}{cc}x’\y’\1\end{array}\right]=\left[\begin{array}{cc}1&amp;0&amp;dx\0&amp;1&amp;dy\0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\1\end{array}\right]<br>$$</p>
+<p>例如：(20,30) -&gt; move(50, -100) = (70, -70)<br>$$<br>\left[\begin{array}{cc}x’\y’\1\end{array}\right]=\left[\begin{array}{cc}1&amp;0&amp;50\0&amp;1&amp;-100\0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}20\30\1\end{array}\right]=\left[\begin{array}{cx}1(20)+0(30)+50(1)\0(20)+1(30)-100(1)\0(20)+0(30)+1(1)\end{array}\right]=\left[\begin{array}{result}70\-70\1\end{array}\right]<br>$$</p>
+<p>$$<br>\left[\begin{array}{cc}x’\y’\end{array}\right]=\left[\begin{array}{cc}1&amp;dx\1&amp;dy\end{array}\right]\left[\begin{array}{cc}x&amp;y\1&amp;1\end{array}\right]=\left[\begin{array}{other}1(x)+dx(1)\1(y)+dy(1)\end{array}\right]=\left[\begin{array}{x}x+dx\y+dy\end{array}\right]<br>$$</p>
+<h3 id="3-2-缩放-四个顶点"><a href="#3-2-缩放-四个顶点" class="headerlink" title="3.2 缩放(四个顶点)"></a>3.2 缩放(四个顶点)</h3><p>$$<br>\left[\begin{array}{cc}x’\y’\1\end{array}\right]=\left[\begin{array}{cc}S_x&amp;0&amp;0\0&amp;S_y&amp;0\0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\1\end{array}\right]以原点进行缩放<br>$$</p>
+<h3 id="3-3-旋转"><a href="#3-3-旋转" class="headerlink" title="3.3 旋转"></a>3.3 旋转</h3><p>$$<br>\left[\begin{array}{cc}x’\y’\1\end{array}\right]=\left[\begin{array}{cc}cos\theta&amp;-sin\theta&amp;0\sin\theta&amp;cos\theta&amp;0\0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\1\end{array}\right]<br>$$</p>
+<h2 id="4-利用矩阵乘法实现3D变换"><a href="#4-利用矩阵乘法实现3D变换" class="headerlink" title="4.利用矩阵乘法实现3D变换"></a>4.利用矩阵乘法实现3D变换</h2><h3 id="4-1-平移"><a href="#4-1-平移" class="headerlink" title="4.1 平移"></a>4.1 平移</h3><p>$$<br>\left[\begin{array}{cc}x’\y’\z’\1\end{array}\right]=\left[\begin{array}{cc}1&amp;0&amp;0&amp;dx\0&amp;1&amp;0&amp;dy\0&amp;0&amp;1&amp;dz\0&amp;0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\z\1\end{array}\right]<br>$$</p>
+<h3 id="4-2-缩放"><a href="#4-2-缩放" class="headerlink" title="4.2 缩放"></a>4.2 缩放</h3><p>$$<br>\left[\begin{array}{cc}x’\y’\z’\1\end{array}\right]=\left[\begin{array}{cc}S_x&amp;0&amp;0&amp;0\0&amp;S_y&amp;0&amp;0\0&amp;0&amp;S_z&amp;0\0&amp;0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\z\1\end{array}\right]<br>$$</p>
+<h3 id="4-3-旋转"><a href="#4-3-旋转" class="headerlink" title="4.3 旋转"></a>4.3 旋转</h3><h4 id="4-3-1-绕z轴旋转"><a href="#4-3-1-绕z轴旋转" class="headerlink" title="4.3.1 绕z轴旋转"></a>4.3.1 绕z轴旋转</h4><p>$$<br>\left[\begin{array}{cc}x’\y’\z’\1\end{array}\right]=\left[\begin{array}{cc}cos\theta&amp;-sin\theta&amp;0&amp;0\sin\theta&amp;cos\theta&amp;0&amp;0\0&amp;0&amp;1&amp;0\0&amp;0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\z\1\end{array}\right]<br>$$</p>
+<h4 id="4-3-2-绕x轴旋转"><a href="#4-3-2-绕x轴旋转" class="headerlink" title="4.3.2 绕x轴旋转"></a>4.3.2 绕x轴旋转</h4><p>$$<br>\left[\begin{array}{cc}x’\y’\z’\1\end{array}\right]=\left[\begin{array}{cc}1&amp;0&amp;0&amp;0\0&amp;cos\theta&amp;-sin\theta&amp;0\0&amp;sin\theta&amp;cos\theta&amp;0\0&amp;0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\z\1\end{array}\right]<br>$$</p>
+<h4 id="4-3-3-绕y轴旋转"><a href="#4-3-3-绕y轴旋转" class="headerlink" title="4.3.3 绕y轴旋转"></a>4.3.3 绕y轴旋转</h4><p>$$<br>\left[\begin{array}{cc}x’\y’\z’\1\end{array}\right]=\left[\begin{array}{cc}cos\theta&amp;0&amp;sin\theta&amp;0\0&amp;1&amp;0&amp;0\-sin\theta&amp;0&amp;cos\theta&amp;0\0&amp;0&amp;0&amp;1\end{array}\right]\left[\begin{array}{cc}x\y\z\1\end{array}\right]<br>$$</p>
+<h2 id="5-一维空间运动"><a href="#5-一维空间运动" class="headerlink" title="5.一维空间运动"></a>5.一维空间运动</h2><h3 id="5-1匀速运动"><a href="#5-1匀速运动" class="headerlink" title="5.1匀速运动"></a>5.1匀速运动</h3><p>$$<br>位移=速度*时间(D = v * t)<br>$$</p>
+<h3 id="5-2帧位移"><a href="#5-2帧位移" class="headerlink" title="5.2帧位移"></a>5.2帧位移</h3><p>$$<br>新位置=原位置+时间<em>速度(newPos=oldPos+time</em>speed)<br>$$</p>
+<h2 id="6-随机飞溅运动"><a href="#6-随机飞溅运动" class="headerlink" title="6.随机飞溅运动"></a>6.随机飞溅运动</h2><h3 id="6-1非正态分布"><a href="#6-1非正态分布" class="headerlink" title="6.1非正态分布"></a>6.1非正态分布</h3><p>一个物体初速度为v_0,加速度为a,某一时刻t的速度公式如下：<br>$$<br>v = v_0 + a * t<br>$$<br>对该公式进行积分,c为初始位置<br>$$<br>\int v = v_0<em>t + 0.5</em>a*t^2 + c<br>$$</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">init()&#123;</span><br><span class="line">	random_a = Math.random();</span><br><span class="line">	random_b = Math.random();</span><br><span class="line">	_initVelocity.x = random_a * (x_max - x_min) + x_min;</span><br><span class="line">	_initVelocity.y = rnadom_b * (y_max - y_min) + y_min;</span><br><span class="line">&#125;</span><br><span class="line">update(dt)&#123;</span><br><span class="line">	this._time += dt;</span><br><span class="line">	this.node.x = this._initPosition.x + this._initVelocity.x * this._time + this.acceleration.x * this._time * this._time / 2;</span><br><span class="line">	this.node.y = this._initPosition.y + this._initVelocity.y * this._time + this.acceleration.y * this._time * this._time / 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2正态分布"><a href="#6-2正态分布" class="headerlink" title="6.2正态分布"></a>6.2正态分布</h3><p>Box-Muller算法</p>
+<p>设x1,x2是在[0,1)上遵从均匀分布的随机数<br>$$<br>Y_1=\sqrt{-2lnx_1}cos(2\pi x_2)\quad Y_2=\sqrt{-2lnx_1}sin(2\pi x_2)<br>$$</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">init()&#123;</span><br><span class="line">	random_a = Math.random();</span><br><span class="line">	random_b = Math.random();</span><br><span class="line">	</span><br><span class="line">	boxMuller_r = sqrt(-2 * Math.log(random_a));</span><br><span class="line">	boxMuller_t = 2 * Math.PI * random_b;</span><br><span class="line">	</span><br><span class="line">	random_x = boxMuller_r * cos(boxMuller_t);</span><br><span class="line">	random_y = boxMuller_r * sin(boxMuller_t);</span><br><span class="line">	</span><br><span class="line">	_initVelocity.x = random_x * (x_max - x_min) + x_min;</span><br><span class="line">	_initVelocity.y = random_y * (y_max - y_min) + y_min;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-Laya3D画线"><a href="#7-Laya3D画线" class="headerlink" title="7.Laya3D画线"></a>7.Laya3D画线</h2><h3 id="7-1-使用PixelLineSprite3D画线"><a href="#7-1-使用PixelLineSprite3D画线" class="headerlink" title="7.1 使用PixelLineSprite3D画线"></a>7.1 使用PixelLineSprite3D画线</h3><p>只要使用addLine即可</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">line.addLine(startPos, endPos, startColor, endColor);</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2使用Laya-Sprite"><a href="#7-2使用Laya-Sprite" class="headerlink" title="7.2使用Laya.Sprite"></a>7.2使用Laya.Sprite</h3><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">this.preTexture2D = null; //前置条件</span><br><span class="line">this.paintSprite.graphics.clear(); //不clear会一直增加drawCall</span><br><span class="line">      let t:Laya.Texture2D = this.blandMaterial.albedoTexture as Laya.Texture2D;</span><br><span class="line">      this.paintSprite.graphics.drawTexture(new Laya.Texture(t), 0, 0, t.width, t.height);</span><br><span class="line">      if(lineNum == 1)&#123;</span><br><span class="line">          this.paintSprite.graphics.drawCircle((nowV.x + 6) * 25 + 104, (nowV.z + 10) * 25 + 3, 10, &quot;#ffffff&quot;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">          this.paintSprite.graphics.drawCircle((nowV.x + 6) * 25 + 104, (nowV.z + 10) * 25 + 3, 10, &quot;#ff0000&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      //手机上会不断增加计算量，网页上测试没问题。</span><br><span class="line">      let canvas = this.paintSprite.drawToCanvas(512, 512, 0, 0); </span><br><span class="line">      let tws = (canvas.getTexture().bitmap as Laya.Texture2D);</span><br><span class="line">      if(this.preTexture2D == null)&#123;</span><br><span class="line">      	this.preTexture2D = tws;</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">      	this.preTexture2D.destroy();//如果不删除新建的texture.会导致gpu增加</span><br><span class="line">      	this.preTexture2D = tws;</span><br><span class="line">      &#125;</span><br><span class="line">      this.blandMaterial.albedoTexture = tws;</span><br><span class="line">      canvas.destroy();  //如果不destroy的话,会不断直接CPUMemory</span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line">      //使用drawToTexture来绘制</span><br><span class="line">      let tws = this.paintSprite.drawToTexture(512, 512, 0, 0) as Laya.Texture;</span><br><span class="line">      let ans = (tws.bitmap as Laya.Texture2D);</span><br><span class="line">      //destroy的应该是ans,而不是tws</span><br><span class="line">      if(this.preTexture2D == null)&#123;</span><br><span class="line">          this.preTexture2D = ans;</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">          this.preTexture2D.destroy();</span><br><span class="line">          this.preTexture2D = ans;</span><br><span class="line">      &#125;</span><br><span class="line">      this.blandMaterial.albedoTexture = ans;</span><br></pre></td></tr></table></figure>
+
+<h1 id="b-数学"><a href="#b-数学" class="headerlink" title="b.数学"></a>b.数学</h1><h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><p>$$<br>\left(\begin{array}{s1}a_{11}&amp;a_{12}\a_{21}&amp;a_{22}\end{array}\right)\left(\begin{array}{s1}b_{11}&amp;b_{12}\b_{21}&amp;b_{22}\end{array}\right) = \left(\begin{array}{s1}a_{11}<em>b_{11}+a_{12}</em>b_{21}&amp;a_{11}<em>b_{12}+a_{12}</em>b_{22}\a_{21}<em>b_{11}+a_{22}</em>b_{21}&amp;a_{21}<em>b_{12}+a_{22}</em>b_{22}\end{array}\right)<br>$$</p>
+<p>$$<br>\left(\begin{array}{s1}a_{11}&amp;a_{12}&amp;a_{13}\a_{21}&amp;a_{22}&amp;a_{23}\end{array}\right)\left(\begin{array}{s1}b_{11}&amp;b_{12}\b_{21}&amp;b_{22}\b_{31}&amp;b_{32}\end{array}\right) = \left(\begin{array}{s1}a_{11}<em>b_{11}+a_{12}</em>b_{21}+a_{13}<em>b_{31}&amp;a_{11}</em>b_{12}+a_{12}<em>b_{22}+a_{13}</em>b_{32}\a_{21}<em>b_{11}+a_{22}</em>b_{21}+a_{23}<em>b_{31}&amp;a_{21}</em>b_{12}+a_{22}<em>b_{22}+a_{23}</em>b_{32}\end{array}\right)<br>$$</p>
+<h2 id="正态分布"><a href="#正态分布" class="headerlink" title="正态分布"></a>正态分布</h2><p>$$<br>f(x)=\frac{1}{\sqrt{2\pi}\sigma}exp(-\frac{(x-\mu)^2}{2\sigma^2})<br>$$</p>
+<p>正态分布表达式中有两个参数，即<a href="https://baike.baidu.com/item/期望/10318906" target="_blank" rel="noopener">期望</a>（均数）μ和标准差σ，σ2为方差。</p>
+<p>正态分布具有两个参数μ和σ^2的<a href="https://baike.baidu.com/item/连续型随机变量" target="_blank" rel="noopener">连续型随机变量</a>的分布，第一参数μ是服从正态分布的随机变量的<a href="https://baike.baidu.com/item/均值" target="_blank" rel="noopener">均值</a>，第二个参数σ^2是此随机变量的<a href="https://baike.baidu.com/item/方差" target="_blank" rel="noopener">方差</a>，所以正态分布记作N(μ,σ2)。</p>
+<p>μ是正态分布的位置参数，描述正态分布的<a href="https://baike.baidu.com/item/集中趋势" target="_blank" rel="noopener">集中趋势</a>位置。概率规律为取与μ邻近的值的概率大，而取离μ越远的值的概率越小。正态分布以X=μ为<a href="https://baike.baidu.com/item/对称轴" target="_blank" rel="noopener">对称轴</a>，左右完全对称。正态分布的期望、<a href="https://baike.baidu.com/item/均数" target="_blank" rel="noopener">均数</a>、<a href="https://baike.baidu.com/item/中位数" target="_blank" rel="noopener">中位数</a>、众数相同，均等于μ。</p>
+<p>σ描述正态分布资料数据分布的离散程度，σ越大，数据分布越分散，σ越小，数据分布越集中。也称为是正态分布的形状参数，σ越大，曲线越扁平，反之，σ越小，曲线越瘦高。</p>
+<h1 id="c-计算机图形学"><a href="#c-计算机图形学" class="headerlink" title="c.计算机图形学"></a>c.计算机图形学</h1><h2 id="1-双缓冲算法"><a href="#1-双缓冲算法" class="headerlink" title="1.双缓冲算法"></a>1.双缓冲算法</h2>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-10-10T07:53:35.645Z">2019-10-10</time>
                 
                 <div class="level-item">
@@ -353,7 +433,7 @@
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        3
+                        4
                     </p>
                 </div>
             </div>
@@ -501,6 +581,25 @@
         
         <article class="media">
             
+            <a href="/2020/06/09/work/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="work">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-06-09T01:43:21.000Z">2020-06-09</time></div>
+                    <a href="/2020/06/09/work/" class="title has-link-black-ter is-size-6 has-text-weight-normal">work</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2019/10/10/book-note-1/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="代码本色-笔记1">
@@ -567,6 +666,17 @@
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/10/">
@@ -663,6 +773,25 @@
         
         <article class="media">
             
+            <a href="/2020/06/09/work/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="work">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-06-09T01:43:21.000Z">2020-06-09</time></div>
+                    <a href="/2020/06/09/work/" class="title has-link-black-ter is-size-6 has-text-weight-normal">work</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2019/10/10/book-note-1/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/images/thumbnail.svg" alt="代码本色-笔记1">
@@ -729,6 +858,17 @@
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2020/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/archives/2019/10/">
